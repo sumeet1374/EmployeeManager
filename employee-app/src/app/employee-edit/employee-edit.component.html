@@ -1,0 +1,194 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-8">
+
+      <form [formGroup]="employeeEditForm" *ngIf="formLoaded" (ngSubmit)="onSubmit()">
+        <div class="form-row">
+          <h5 class="mt-2">{{newRecord?"New":"Edit"}} Employee</h5>
+          <div class="form-group col-md-12 m-3 text-right">
+            <button class="btn btn-success btn-sm mr-3" type="submit"
+              [disabled]="employeeEditForm.invalid">Save</button>
+            <button class="btn btn-primary btn-sm mr-3" type="button" routerLink="/employees">Cancel</button>
+          </div>
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a [ngClass]="{ 'nav-link':true, 'active':activeGeneral}" type="button"
+                (click)="toggleTab('general')">General Information</a>
+            </li>
+            <li class="nav-item">
+              <a [ngClass]="{ 'nav-link':true, 'active': activeAddress}" type="button"
+                (click)="toggleTab('address')">Addresses</a>
+            </li>
+          </ul>
+        </div>
+        <div id="genericPanel" [ngClass]="{ 'd-none':hideGeneral }">
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label>First Name</label>
+              <input type="text" class="form-control form-control-sm" placeholder="First Name"
+                formControlName="firstName">
+              <app-validation-message [control]="firstName" [validators]="{ 'required':'First Name is required.'}">
+              </app-validation-message>
+            </div>
+            <div class="form-group col-md-4">
+              <label>Middle Name</label>
+              <input type="text" class="form-control form-control-sm" placeholder="Middle Name"
+                formControlName="middleName">
+
+            </div>
+            <div class="form-group col-md-4">
+              <label>Last Name</label>
+              <input type="text" class="form-control form-control-sm" placeholder="Last Name"
+                formControlName="lastName">
+              <app-validation-message [control]="lastName" [validators]="{ 'required':'Last Name is required.'}">
+              </app-validation-message>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label>Gender</label>
+              <select class="form-control form-control-sm" formControlName="gender">
+                <option disabled>Select Gender</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+              </select>
+              <app-validation-message [control]="gender" [validators]="{ 'required':'Gender is required.'}">
+              </app-validation-message>
+            </div>
+            <div class="form-group col-md-4">
+              <label>Email</label>
+              <input type="email" class="form-control form-control-sm" placeholder="Email" formControlName="email">
+              <app-validation-message [control]="email" [validators]="{ 'email':'Please enter a valid email address.'}">
+              </app-validation-message>
+            </div>
+            <div class="form-group col-md-4">
+              <label>Department</label>
+              <select class="form-control form-control-sm" formControlName="department">
+                <option disabled>Select Department</option>
+                <option *ngFor="let department of departments" value="{{department.id}}">{{department.name}}</option>
+              </select>
+              <app-validation-message [control]="department" [validators]="{ 'required':'Department is required.'}">
+              </app-validation-message>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label>Birth Date</label>
+              <div class="input-group">
+                <input class="form-control form-control-sm" placeholder="yyyy-mm-dd" name="dp" readonly ngbDatepicker
+                  #bd="ngbDatepicker" formControlName="dateOfBirth" [minDate]="minDate" [maxDate]="maxBirthDate" >
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary calendar" (click)="bd.toggle()" type="button"></button>
+                </div>
+              </div>
+              <app-validation-message [control]="dateOfBirth" [validators]="{ 'required':'Date of Birth is required.'}">
+              </app-validation-message>
+            </div>
+            <div class="form-group col-md-4">
+              <label>Joining Date</label>
+              <div class="input-group">
+                <input class="form-control form-control-sm" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker
+                  #jd="ngbDatepicker" readonly formControlName="joiningDate">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary calendar" (click)="jd.toggle()" type="button"></button>
+                </div>
+              </div>
+              <app-validation-message [control]="joiningDate" [validators]="{ 'required':'Joining Date is required.'}">
+              </app-validation-message>
+            </div>
+            <div class="form-group col-md-4">
+              <label>Separation Date</label>
+              <div class="input-group">
+                <input class="form-control form-control-sm" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker
+                  #sd="ngbDatepicker" readonly formControlName="separationDate">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary calendar" (click)="sd.toggle()" type="button"></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="addressPanel" [ngClass]="{ 'd-none':hideAddress }">
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <div formGroupName="currentAddress">
+                <label class="font-weight-bold">Current Address</label>
+                <div class="form-group">
+                  <div class="form-group">
+                    <label>Address Line 1</label>
+                    <textarea class="form-control form-control-sm" formControlName="addressLine1"></textarea>
+                    <app-validation-message [control]="curAddressLine1"
+                      [validators]="{ 'required':'Address 1 is required.'}"></app-validation-message>
+                  </div>
+                  <div class="form-group">
+                    <label>Address Line 2</label>
+                    <textarea class="form-control form-control-sm" formControlName="addressLine2"></textarea>
+
+                  </div>
+                  <div class="form-group">
+                    <label>City</label>
+                    <input type="text " class="form-control form-control-sm" formControlName="city" />
+                    <app-validation-message [control]="curCity" [validators]="{ 'required':'City is required.'}">
+                    </app-validation-message>
+                  </div>
+                  <div class="form-group">
+                    <label>State</label>
+                    <input type="text " class="form-control form-control-sm" formControlName="state" />
+                    <app-validation-message [control]="curState" [validators]="{ 'required':'State is required.'}">
+                    </app-validation-message>
+                  </div>
+                  <div class="form-group">
+                    <label>Pin Code</label>
+                    <input type="text " class="form-control form-control-sm" formControlName="pinCode" />
+                    <app-validation-message [control]="curPinCode"
+                      [validators]="{ 'required':'Pin Code is required.','pattern':'Please enter valid Pin Code.'}">
+                    </app-validation-message>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group col-md-6">
+              <div formGroupName="permanentAddress">
+                <label class="font-weight-bold">Permanent Address</label>
+                <div class="form-group">
+                  <div class="form-group">
+                    <label>Address Line 1</label>
+                    <textarea class="form-control form-control-sm"
+                    formControlName="addressLine1"></textarea>
+                    <app-validation-message [control]="perAddressLine1" [validators]="{ 'required':'Address 1 is required.'}">
+                    </app-validation-message>
+                  </div>
+                  <div class="form-group">
+                    <label>Address Line 2</label>
+                    <textarea class="form-control form-control-sm" formControlName="addressLine2"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label>City</label>
+                    <input type="text " class="form-control form-control-sm" formControlName="city" />
+                    <app-validation-message [control]="perCity" [validators]="{ 'required':'City is required.'}">
+                    </app-validation-message>
+                  </div>
+                  <div class="form-group">
+                    <label>State</label>
+                    <input type="text " class="form-control form-control-sm" formControlName="state" />
+                    <app-validation-message [control]="perState" [validators]="{ 'required':'State is required.'}">
+                    </app-validation-message>
+                  </div>
+                  <div class="form-group">
+                    <label>Pin Code</label>
+                    <input type="text " class="form-control form-control-sm" formControlName="pinCode" />
+                    <app-validation-message [control]="perPinCode"
+                      [validators]="{ 'required':'Pin Code is required.','pattern':'Please enter valid Pin Code.'}">
+                    </app-validation-message>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

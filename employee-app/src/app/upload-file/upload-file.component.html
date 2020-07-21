@@ -1,0 +1,39 @@
+<div class="m-2">
+
+</div>
+<div class="container">
+  <div class="row">
+    <h4>Documents</h4>
+  </div>
+  <div class="row">
+    <div class="col-sm-8">
+      <form>
+        <div class="form-group">
+           <label>Upload Document</label>
+           <input type="file" #empdoc class="form-control form-control-sm"/>
+
+        </div>
+        <div>
+          <button class="btn btn-primary btn-sm mb-3" type="button" (click)="onUpload()">Upload</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+  <div class="row">
+
+    <h5>Uploaded Documents</h5>
+  </div>
+  <div class="row">
+    <table class="table" *ngIf="documentsLoaded">
+      <tbody>
+        <tr *ngFor="let doc of documents">
+          <td>{{doc.document.fileName}}</td>
+          <td>{{doc.document.type}}</td>
+          <td><button class="btn btn-success btn-sm mr-2" (click)="onDowload(doc.employeeId,doc.documentId)">View/Download</button>
+          <button class="btn btn-danger btn-sm" (click)="onDelete(doc.employeeId,doc.documentId)">Remove</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

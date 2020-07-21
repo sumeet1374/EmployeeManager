@@ -1,0 +1,8 @@
+<div class="field-error" *ngIf="control.invalid && (control.dirty || control.touched)">
+  <div *ngFor="let key of keys">
+    <div *ngIf="control.errors[key]">
+      {{validators[key]}}
+    </div>
+  </div>
+</div>
+

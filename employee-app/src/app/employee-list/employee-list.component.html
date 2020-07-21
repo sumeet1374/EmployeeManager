@@ -1,0 +1,78 @@
+<div class="m-2"></div>
+
+<div class="container">
+  <div class="row">
+    <h4>Employee List</h4>
+  </div>
+  <div class="m-1 text-right">
+    <button class="btn btn-primary btn-sm" routerLink="/employeeedit/0">New Employee</button>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <pagination-controls (pageChange)="onPageChange($event)"></pagination-controls>
+      <table class="table">
+        <tbody>
+          <tr *ngFor="let employee of employeeList | paginate: { itemsPerPage: pageSize, currentPage: p, totalItems:totalRecords}">
+            <td>
+
+              <div class="card">
+                <div class="card-header">
+                  <div class="font-weight-bold">
+                  {{employee.firstName}} {{employee.middleName}} {{ employee.lastName }}
+                </div>
+
+                  <div class="mt-2 text-right">
+                    <button class="btn btn-success btn-sm mr-1" routerLink="/employeeedit/{{employee.id}}" >Edit</button>
+                  <button class="btn btn-primary btn-sm mr-1" routerLink="/uploaddoc/{{employee.id}}">Documents</button>
+                  <button class="btn btn-danger btn-sm" (click)="onDeactivateEmployee(employee.id)">Deactivate</button>
+                  </div>
+                </div>
+                <div class="card-body">
+
+                  <div class="card-text"><strong>DOB :</strong>{{employee.dateOfBirth | dateDisplay}} <strong>  Gender : </strong>{{employee.gender}}</div>
+                  <div class="card-text"><strong>Join Date :</strong>{{employee.joiningDate | dateDisplay}} </div>
+                  <div class="card-text"><strong>Exit Date :</strong>{{employee.separationDate | dateDisplay}} </div>
+                  <div class="card-text"><strong>Email :</strong>{{employee.email }} </div>
+                  <div class="card-text"><strong> Department: </strong>{{employee.department.name}}</div>
+                </div>
+
+              </div>
+
+              </td>
+            <td>
+              <div class="card">
+                <div class="card-header font-weight-bold">Current Address</div>
+                <div class="card-body">
+                  <div class="card-text">{{employee.currentAddress.addressLine1}}</div>
+                  <div class="card-text">{{employee.currentAddress.addressLine2}}</div>
+                  <div class="card-text">{{employee.currentAddress.city}}</div>
+                  <div class="card-text">{{employee.currentAddress.state}}</div>
+                  <div class="card-text">{{employee.currentAddress.pinCode}}</div>
+                </div>
+              </div>
+
+            </td>
+            <td>
+              <div class="card">
+                <div class="card-header font-weight-bold">Permanent Address</div>
+                <div class="card-body">
+                  <div class="card-text">{{employee.permanentAddress.addressLine1}}</div>
+                  <div class="card-text">{{employee.permanentAddress.addressLine2}}</div>
+                  <div class="card-text">{{employee.permanentAddress.city}}</div>
+                  <div class="card-text">{{employee.permanentAddress.state}}</div>
+                  <div class="card-text">{{employee.permanentAddress.pinCode}}</div>
+                </div>
+              </div>
+            </td>
+
+            <td>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
+
