@@ -40,6 +40,11 @@ namespace Employee.Api
                 policy.AllowAnyMethod();
 
             }));
+
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "employee-app";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,14 +52,22 @@ namespace Employee.Api
         {
 
             app.UseCors(CORS_POLICY);
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            app.UseDeveloperExceptionPage();
+            //if (env.IsDevelopment())
+            //{
+               
+            //}
 
 
 
             app.UseHttpsRedirection();
+
+            // Important for SPA
+            app.UseStaticFiles();
+            if (!env.IsDevelopment())
+            {
+                app.UseSpaStaticFiles();
+            }
 
             app.UseRouting();
 
@@ -66,6 +79,18 @@ namespace Employee.Api
             {
                 endpoints.MapControllers();
             });
+
+            app.UseSpa(sp=>
+            {
+               
+            });
+
+           
+
+            //app.UseSpa((spa)=>
+            //{
+            //    spa.Options.SourcePath = "employee-app";
+            //});
 
             // Register the Swagger generator and the Swagger UI middlewares
             app.UseOpenApi();

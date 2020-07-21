@@ -4,8 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Common.Services
 {
@@ -30,9 +28,43 @@ namespace Common.Services
             _documentEmpRepo = documentEmpRepo;
 
         }
+
+        private static int CalculateAge(DateTime dateOfBirth)
+        {
+            int age = 0;
+            age = DateTime.Now.Year - dateOfBirth.Year;
+            if (DateTime.Now.DayOfYear < dateOfBirth.DayOfYear)
+                age = age - 1;
+
+            return age;
+        }
         private void ValidateEmployee(Employee employee)
         {
+            if(string.IsNullOrEmpty(employee.FirstName))
+                throw new BusinessException(string.Format(Messages.IS_REQUIRED, nameof(employee.FirstName)));
+
+            if (string.IsNullOrEmpty(employee.LastName))
+                throw new BusinessException(string.Format(Messages.IS_REQUIRED, nameof(employee.LastName)));
+
+            if (string.IsNullOrEmpty(employee.Gender))
+                throw new BusinessException(string.Format(Messages.IS_REQUIRED, nameof(employee.Gender)));
+
+            if(employee.Gender !="M" &&  employee.Gender != "F")
+            {
+                throw new BusinessException(Messages.GENDER_RANGE);
+            }
+
+            // Age should be 18 years and should be less than 60 years
+            var age =  CalculateAge(employee.DateOfBirth);
+            if (age < 18)
+                throw new BusinessException(Messages.UNDER_AGE);
+
             
+            if (age >= 60)
+                throw new BusinessException(Messages.OVER_AGE);
+
+
+
         }
         public void Create(Employee obj)
         {

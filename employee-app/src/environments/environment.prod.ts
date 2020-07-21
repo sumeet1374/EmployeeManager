@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  serviceBastUrl: "",
+  pageSize:5
 };
