@@ -53,21 +53,22 @@ namespace Employee.Api
 
             app.UseCors(CORS_POLICY);
             app.UseDeveloperExceptionPage();
-            //if (env.IsDevelopment())
-            //{
-               
-            //}
+            
 
 
 
             app.UseHttpsRedirection();
 
-            // Important for SPA
-            app.UseStaticFiles();
-            if (!env.IsDevelopment())
+            // Important for SPA 
+            if(!env.IsDevelopment())
             {
-                app.UseSpaStaticFiles();
+                app.UseStaticFiles();
+                if (!env.IsDevelopment())
+                {
+                    app.UseSpaStaticFiles();
+                }
             }
+           
 
             app.UseRouting();
 
@@ -80,10 +81,14 @@ namespace Employee.Api
                 endpoints.MapControllers();
             });
 
-            app.UseSpa(sp=>
+            if (!env.IsDevelopment())
             {
+                app.UseSpa(sp =>
+                {
+
+                });
+            }
                
-            });
 
            
 
